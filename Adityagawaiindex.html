@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Scholarship ULTRA PRO MAX</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:linear-gradient(135deg,#667eea,#764ba2);
+text-align:center;
+margin:0;
+color:white;
+}
+
+h1{
+background:black;
+padding:15px;
+}
+
+.menu button{
+padding:18px 35px;
+font-size:22px;
+margin:10px;
+border:none;
+border-radius:12px;
+background:#ff9800;
+color:white;
+cursor:pointer;
+}
+
+.quizbox{
+display:none;
+background:white;
+color:black;
+width:80%;
+margin:auto;
+margin-top:30px;
+padding:25px;
+border-radius:12px;
+}
+
+.option{
+display:block;
+width:80%;
+margin:10px auto;
+padding:12px;
+font-size:18px;
+background:#2196f3;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+.nextbtn{
+padding:12px 30px;
+font-size:18px;
+background:#4CAF50;
+color:white;
+border:none;
+border-radius:8px;
+}
+
+</style>
+
+<script>
+
+let subject=""
+let current=0
+let score=0
+let answers=[]
+
+const quizzes={
+
+maths:[
+
+{q:"1. √(5+2√6) =",o:["√2+√3","√3-√2","2+√6","√6+1"],a:0},
+{q:"2. If 2x : 3y = 4 : 9 then x:y =",o:["2:3","3:2","1:2","4:3"],a:0},
+{q:"3. (2³×4²×8)÷16 =",o:["16","8","4","32"],a:0},
+{q:"4. CI on ₹1000 for 2 yrs at 10% =",o:["210","200","220","215"],a:0},
+{q:"5. √256 + ∛64 =",o:["20","18","22","16"],a:0},
+{q:"6. Area of square with diagonal 10√2 =",o:["100","200","150","50"],a:0},
+{q:"7. If a:b=3:4 and b:c=5:6 then a:b:c =",o:["15:20:24","3:4:6","10:20:24","5:4:3"],a:0},
+{q:"8. Profit% if CP=480 SP=540 =",o:["12.5%","10%","8%","15%"],a:0},
+{q:"9. 2²+3³+4² =",o:["43","41","39","45"],a:0},
+{q:"10. √144 + ∛125 =",o:["17","18","16","19"],a:0},
+{q:"11. If √x=9 then x=",o:["81","18","27","72"],a:0},
+{q:"12. Discount% if MP=800 SP=720 =",o:["10%","8%","12%","15%"],a:0},
+{q:"13. (3²×9³)÷27² =",o:["9","3","27","1"],a:0},
+{q:"14. Ratio 0.75 : 1.5 =",o:["1:2","2:1","3:2","4:3"],a:0},
+{q:"15. SI on ₹1200 at 5% for 3 yrs =",o:["180","150","200","160"],a:0},
+{q:"16. If 5x=2y and y=10 then x=",o:["4","5","3","2"],a:0},
+{q:"17. √(49×121) =",o:["77","21","35","14"],a:0},
+{q:"18. 3²+4²+5² =",o:["50","49","45","40"],a:0},
+{q:"19. 10 men finish work in 20 days. 5 men need?",o:["40","30","35","25"],a:0},
+{q:"20. Speed if 120m train crosses pole in 6 sec =",o:["72 km/h","60 km/h","90 km/h","80 km/h"],a:0}
+
+],
+
+english:[
+
+{q:"1. Synonym of 'Obsolete'",o:["Outdated","Modern","New","Fresh"],a:0},
+{q:"2. Antonym of 'Benevolent'",o:["Kind","Cruel","Helpful","Soft"],a:1},
+{q:"3. Correct spelling",o:["Accomodate","Acommodate","Accommodate","Acomodate"],a:2},
+{q:"4. Meaning of 'Meticulous'",o:["Careless","Very careful","Lazy","Fast"],a:1},
+{q:"5. 'A blessing in disguise' means",o:["Hidden good","Hidden danger","Bad luck","False hope"],a:0},
+{q:"6. Plural of 'Criterion'",o:["Criteria","Criterions","Criterion","Criters"],a:0},
+{q:"7. Opposite of 'Scarce'",o:["Rare","Plenty","Little","Few"],a:1},
+{q:"8. 'Ubiquitous' means",o:["Everywhere","Nowhere","Hidden","Rare"],a:0},
+{q:"9. Correct sentence",o:["He don't know","He doesn't know","He doesn't knows","He not know"],a:1},
+{q:"10. Synonym of 'Rapid'",o:["Fast","Slow","Weak","Late"],a:0},
+{q:"11. Antonym of 'Expand'",o:["Grow","Spread","Contract","Increase"],a:2},
+{q:"12. 'Anonymous' means",o:["Named","Unknown","Famous","Bright"],a:1},
+{q:"13. 'Fragile' means",o:["Strong","Delicate","Heavy","Large"],a:1},
+{q:"14. 'Diligent' means",o:["Hardworking","Lazy","Weak","Rude"],a:0},
+{q:"15. 'Eloquent' means",o:["Fluent","Silent","Angry","Shy"],a:0},
+{q:"16. Antonym of 'Hostile'",o:["Friendly","Angry","Enemy","Hard"],a:0},
+{q:"17. 'Magnificent' means",o:["Grand","Poor","Small","Weak"],a:0},
+{q:"18. 'Vivid' means",o:["Bright","Dark","Slow","Weak"],a:0},
+{q:"19. Synonym of 'Abundant'",o:["Plentiful","Scarce","Rare","Few"],a:0},
+{q:"20. 'Ancient' means",o:["Very old","New","Young","Fresh"],a:0}
+
+],
+
+intelligence:[
+
+{q:"1. 2,6,12,20,30, ?",o:["40","42","44","46"],a:1},
+{q:"2. Find odd: Dog,Cat,Cow,Tiger",o:["Dog","Cat","Cow","Tiger"],a:2},
+{q:"3. If A=1 B=2 then CAT =",o:["24","26","27","25"],a:0},
+{q:"4. Mirror of 12:45",o:["11:15","12:15","11:45","10:15"],a:0},
+{q:"5. Next: 1,4,9,16, ?",o:["20","25","36","49"],a:1},
+{q:"6. If PEN=35 then BOOK=?",o:["41","43","47","45"],a:0},
+{q:"7. Find missing: 3,9,27,?",o:["54","72","81","90"],a:2},
+{q:"8. Odd word",o:["Apple","Mango","Carrot","Banana"],a:2},
+{q:"9. Analogy: Bird:Fly :: Fish:?",o:["Swim","Run","Jump","Walk"],a:0},
+{q:"10. Series: 5,10,20,40,?",o:["60","70","80","90"],a:2},
+{q:"11. Next: 7,14,28,56,?",o:["84","96","112","120"],a:2},
+{q:"12. Odd: Square,Triangle,Circle,Cube",o:["Square","Triangle","Circle","Cube"],a:3},
+{q:"13. 3,6,18,72,?",o:["360","288","216","144"],a:1},
+{q:"14. Next: A,C,F,J,?",o:["O","P","Q","R"],a:0},
+{q:"15. Mirror of 3:20",o:["8:40","9:40","8:20","9:20"],a:0},
+{q:"16. Odd: Red,Blue,Green,Dog",o:["Red","Blue","Green","Dog"],a:3},
+{q:"17. Series: 11,13,17,19,?",o:["21","23","25","27"],a:1},
+{q:"18. Next: 2,5,11,23,?",o:["47","45","44","43"],a:0},
+{q:"19. Odd: Rose,Lily,Tiger,Lotus",o:["Rose","Lily","Tiger","Lotus"],a:2},
+{q:"20. Series: 4,6,9,13,?",o:["18","17","19","20"],a:0}
+
+],
+
+marathi:[
+
+{q:"1. 'परिश्रम' या शब्दाचा समानार्थी शब्द",o:["कष्ट","आळस","खेळ","झोप"],a:0},
+{q:"2. 'सत्य' विरुद्धार्थी शब्द",o:["खोटे","योग्य","बरोबर","खरे"],a:0},
+{q:"3. 'ज्ञान' शब्दाचा अर्थ",o:["माहिती","अज्ञान","झोप","खेळ"],a:0},
+{q:"4. 'दया' समानार्थी शब्द",o:["करुणा","राग","भीती","द्वेष"],a:0},
+{q:"5. 'उंच' विरुद्धार्थी शब्द",o:["ठेंगणे","मोठे","लांब","रुंद"],a:0},
+{q:"6. 'विद्यार्थी' म्हणजे",o:["शिकणारा","खेळणारा","झोपणारा","पळणारा"],a:0},
+{q:"7. 'जल' म्हणजे",o:["पाणी","आग","हवा","माती"],a:0},
+{q:"8. 'अंधार' विरुद्धार्थी शब्द",o:["प्रकाश","रात्र","चंद्र","ढग"],a:0},
+{q:"9. 'शूर' समानार्थी",o:["धाडसी","भ्याड","आळशी","रागीट"],a:0},
+{q:"10. 'सुख' विरुद्धार्थी",o:["दुःख","आनंद","हसू","मजा"],a:0},
+{q:"11. 'ज्ञान' विरुद्धार्थी",o:["अज्ञान","शहाणपण","शिक्षण","विद्या"],a:0},
+{q:"12. 'गती' समानार्थी",o:["वेग","थांबा","झोप","खेळ"],a:0},
+{q:"13. 'दिवस' विरुद्धार्थी",o:["रात्र","सकाळ","दुपार","सायंकाळ"],a:0},
+{q:"14. 'पुस्तक' म्हणजे",o:["वाचनासाठी","खेळासाठी","खाण्यासाठी","झोपण्यासाठी"],a:0},
+{q:"15. 'विद्या' समानार्थी",o:["ज्ञान","खेळ","अन्न","झोप"],a:0},
+{q:"16. 'गोड' विरुद्धार्थी",o:["कडू","चवदार","छान","सुंदर"],a:0},
+{q:"17. 'मित्र' समानार्थी",o:["सखा","शत्रू","दुश्मन","परका"],a:0},
+{q:"18. 'मोठा' विरुद्धार्थी",o:["लहान","उंच","लांब","रुंद"],a:0},
+{q:"19. 'हसू' विरुद्धार्थी",o:["रडणे","खेळणे","बसणे","धावणे"],a:0},
+{q:"20. 'ज्ञान मंदिर' म्हणजे",o:["शाळा","बाजार","घर","रस्ता"],a:0}
+
+]
+
+}
+
+function startQuiz(sub){
+
+subject=sub
+current=0
+score=0
+
+document.querySelector(".menu").style.display="none"
+document.querySelector(".quizbox").style.display="block"
+
+showQ()
+
+}
+
+function showQ(){
+
+let q=quizzes[subject][current]
+
+document.getElementById("q").innerHTML=q.q
+
+let html=""
+
+q.o.forEach((opt,i)=>{
+html+=`<button class='option' onclick='select(${i})'>${opt}</button>`
+})
+
+document.getElementById("options").innerHTML=html
+
+document.getElementById("count").innerHTML="Question "+(current+1)+" / 20"
+
+}
+
+function select(i){
+
+if(i==quizzes[subject][current].a) score+=2
+
+current++
+
+if(current<20) showQ()
+else finish()
+
+}
+
+function finish(){
+
+document.querySelector(".quizbox").innerHTML="<h2>Your Score : "+score+" / 40</h2>"
+
+}
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Scholarship ULTRA PRO MAX</h1>
+
+<div class="menu">
+
+<button onclick="startQuiz('maths')">Maths Quiz</button>
+<button onclick="startQuiz('english')">English Quiz</button>
+<button onclick="startQuiz('intelligence')">Intelligence Quiz</button>
+<button onclick="startQuiz('marathi')">Marathi Quiz</button>
+
+<p>Made by Aditya Dipak Gawai</p>
+
+</div>
+
+<div class="quizbox">
+
+<h2 id="count"></h2>
+
+<h3 id="q"></h3>
+
+<div id="options"></div>
+
+</div>
+
+</body>
+</html>
